@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/navigation_Message"
+            android:icon="@drawable/ic_message_black_24dp"
+            android:title="Chat Now"/>
+
+    <item
+            android:id="@+id/navigation_MatchMake"
+            android:icon="@drawable/love_sign"
+            android:title="Match Make"/>
+
+    <item android:id="@+id/navigation_request"
+          android:icon="@drawable/ic_notifications_black_24dp"
+          android:title="Requests"/>
+
+    <item
+            android:id="@+id/navigation_Profile"
+            android:icon="@drawable/profile"
+            android:title="My Profile"/>
+
+
+
+</menu>

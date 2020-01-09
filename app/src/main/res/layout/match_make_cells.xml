@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+              android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center"
+              android:background="@drawable/background_for_cell_update" android:layout_margin="20px">
+
+    <ImageView
+            android:layout_width="400px"
+            android:layout_height="400px" app:srcCompat="@drawable/add_reminder_24dp"
+            android:id="@+id/imageView2" android:layout_weight="0"/>
+    <Button
+            android:text="View Profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/ViewProfile" android:layout_weight="0"
+            android:textColor="@color/MatchedWithDark" android:background="@color/NormalBackground"
+            android:layout_margin="20px"/>
+</LinearLayout>
