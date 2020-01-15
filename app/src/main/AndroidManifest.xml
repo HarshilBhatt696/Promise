@@ -29,12 +29,16 @@
         <activity
                 android:name=".MainPage"
                 android:label="@string/title_activity_main_page"
-                android:theme="@style/Theme.AppCompat">
+               >
+            <intent-filter>
+                <action android:name="RequestActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity
                 android:name=".SplashActivity"
                 android:label="@string/app_name"
-                android:theme="@style/Theme.AppCompat">
+               >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -45,19 +49,23 @@
         </activity>
         <activity
                 android:name=".DateInfo"
-                android:theme="@style/Theme.AppCompat">
+               >
         </activity>
         <activity
                 android:name=".MainActivity"
-                android:theme="@style/Theme.AppCompat">
+                >
         </activity>
         <activity
                 android:name=".login_mobile"
-                android:theme="@style/Theme.AppCompat">
+                >
         </activity>
         <activity
                 android:name=".UserInfor"
-                android:theme="@style/Theme.AppCompat">
+                >
+        </activity>
+        <activity
+                android:name=".SetImage"
+        >
         </activity>
 
         <meta-data
@@ -67,25 +75,20 @@
                 android:name="preloaded_fonts"
                 android:resource="@array/preloaded_fonts"/>
 
-        <!--<service android:name=".Service.MyFirebaseInstanceIDService">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>-->
-            <!--</intent-filter>-->
-        <!--</service> &lt;!&ndash; FCM &ndash;&gt;-->
         <meta-data
                 android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@drawable/rect_oval_white"/>
-
+                android:resource="@drawable/ic_group_add_black_24dp" />
         <service android:name=".Service.MyFirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <!--<service android:name=".Service.MyFirebaseMessagingService">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>-->
-            <!--</intent-filter>-->
-        <!--</service>-->
+        <service android:name=".Service.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
     </application>
+
 
 </manifest>

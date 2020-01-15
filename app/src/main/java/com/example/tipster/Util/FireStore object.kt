@@ -3,66 +3,87 @@ package com.example.tipster.Util
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.example.tipster.CurrentUserInfo
-import com.example.tipster.FireabaseClass
-import com.example.tipster.Model.ChatChannel
-import com.example.tipster.Model.MessageType
-import com.example.tipster.Model.TextMessage
-import com.example.tipster.Model.User
+import bolts.Task
+import com.airbnb.lottie.LottieAnimationView
+import com.example.tipster.*
+import com.example.tipster.Model.*
 import com.example.tipster.RecyclerView.Item.MatchMakinProfile
 import com.example.tipster.RecyclerView.Item.PersonClass
 import com.example.tipster.RecyclerView.Item.RequestClass
 import com.example.tipster.RecyclerView.Item.TestMessageItem
-import com.example.tipster.References
-import com.example.tipster.login_mobile
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.xwray.groupie.kotlinandroidextensions.Item
+import java.lang.ref.Reference
+
 var New = true
 object FireStoreUtil {
 
     private val firestoreInstance: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
-
+    val FireabaseUserName = FireabaseClass.mAuth.currentUser!!.displayName
     private val currentUserDocRef: DocumentReference
         get() {
-            val document: DocumentReference = firestoreInstance.document("users/${FirebaseAuth.getInstance().currentUser!!.displayName}")
-            return document
+
+            try {
+                val document: DocumentReference =
+                    firestoreInstance.document("users/${FirebaseAuth.getInstance().currentUser!!.displayName}")
+                return document
+            } catch (E : Throwable) {
+                print("ADG")
+                val document: DocumentReference =
+                    firestoreInstance.document("users/${FireabaseUserName}")
+                return document
+            }
         }
 
     private val chatChannelCollection = firestoreInstance.collection(References.chatChannels.toString())
 
-    fun initCurrentUserIfFirstTime(onComplete: () -> Unit) {
+    fun initCurrentUserIfFirstTime(CurrentCotext: Context ,onComplete: () -> Unit) {
         currentUserDocRef.get().addOnSuccessListener { documentSnapshot ->
              if (!documentSnapshot.exists()) { // If does not exist
 
 
             val CreateNewUser =                                                                                                                             // Refer to data class for User inputs in this
-                User(FireabaseClass.UserName, FireabaseClass.Gender, "", null, ArrayList<String>(), mutableListOf() , FirebaseAuth.getInstance().currentUser!!.uid, ArrayList<String>() ,ArrayList<String>() , ArrayList<String>() )
+                User(FireabaseClass.UserName, FireabaseClass.Gender, "", null, ArrayList<String>(), mutableListOf() , FirebaseAuth.getInstance().currentUser!!.uid, ArrayList<String>() ,ArrayList<String>() , ArrayList<String>() , ArrayList<String>()  , true  )
 
 
             currentUserDocRef.set(CreateNewUser).addOnSuccessListener {
                 onComplete()
+                val S = (Intent(CurrentCotext, UserInfor::class.java))
+                CurrentCotext.startActivity(S)
+
             }
+
               }
-               else
-               onComplete()
+               else {
+                 onComplete()
+                 val S = (Intent(CurrentCotext, MainPage::class.java))
+                 CurrentCotext.startActivity(S)
+
+             }
            }
         }
 
 
 
 
-    fun UpdateThatUserLoggedInSuccesfully() {
+
+
+    fun MatchMakeSameGender(Bool : Boolean) {
         getCurrentUser { user ->
             val userFieldMap = mutableMapOf<String, Any>()
-
-            userFieldMap["mutableMapOf"] = true
+            userFieldMap["MatchMakeSameGender"] = Bool
             currentUserDocRef.update(userFieldMap)
 
         }
     }
+
+
+
+
     fun getOrCreateChatChannel(otherUserId: String,
                                onComplete: (channelId: String) -> Unit) {
         currentUserDocRef.collection("engagedChatChannels")
@@ -116,7 +137,7 @@ object FireStoreUtil {
 
     fun UpdateUser( bio : String = "" , profilePicturePath: String? = null) {
         val userFieldMap = mutableMapOf<String, Any>()
-        if (bio.isNotBlank()) userFieldMap["bio"] = bio
+        if (bio.isNotBlank()) userFieldMap["Bio"] = bio
         if (profilePicturePath != null)
             userFieldMap["profilePicturePath"] = profilePicturePath
         currentUserDocRef.update(userFieldMap)
@@ -141,14 +162,27 @@ object FireStoreUtil {
 
 
     // Adds Requests
-    fun UpdateOtherUsersInFO(OtherUserId : String , UserId : String, OtherUserIdRequests : ArrayList<String>) {
+    fun UpdateOtherUsersInFO(OtherUserId : String , UserId : String, OtherUserIdRequests : ArrayList<String>  , MineNotShown : ArrayList<String>) {
         val document: DocumentReference = firestoreInstance.document("users/${OtherUserId}")
         val userFieldMap = mutableMapOf<String, Any>()
         val Requests = OtherUserIdRequests
         Requests.add(UserId)
+        MineNotShown.add(OtherUserId)
+
+
 
 
         userFieldMap["requests"] = Requests
+
+
+        getCurrentUser { user ->
+            val MyDocument: DocumentReference = firestoreInstance.document("users/${user.name}")
+            val MyUserTable = mutableMapOf<String, Any>()
+            MyUserTable["NotToBeViwedAnywhere"] = MineNotShown
+            currentUserDocRef.update(MyUserTable)
+        }
+
+
            document.update(userFieldMap)
 
 
@@ -173,7 +207,7 @@ object FireStoreUtil {
 
 
 
-        // Removes Person from interests
+        // Removes Person from requests
         val RequestReceived = MyChatRequests
         RequestReceived.remove(OtherUserId)
         MyUserField["requests"] = RequestReceived
@@ -185,54 +219,43 @@ object FireStoreUtil {
     }
 
     // Accept the request that was sent to you by other users to start talking , dating and chating .
-    fun AcceptRequests(OtherUserId: String , MyUserId : String, OtherChatTalkingToRequests : ArrayList<String> , ChatTalkingToRequests : ArrayList<String> , OtherUsersIdRequests : ArrayList<String>) {
+//
 
+    fun DeclineRequest(OtherUserId: String , MyUserId : String, NotViewPeople : ArrayList<String> , ChatTalkingToRequests : ArrayList<String> , OtherUsersIdRequests : ArrayList<String>) {
 
-//        val document: DocumentReference = firestoreInstance.document("users/${OtherUserId}")
-//        val userFieldMap = mutableMapOf<String, Any>()
-//        val Requests = OtherChatTalkingToRequests
-//        Requests.add(MyUserId)
-//        userFieldMap["numberOfPeopleDating"] = Requests
-//        document.update(userFieldMap)
-
-
-
-
-
-      //   #1 Update Other User
         val MyUserField = mutableMapOf<String, Any>() // Used for both the cases if and else
 
 
-            val otherUser: DocumentReference = firestoreInstance.document("users/${OtherUserId}")
 
-            otherUser.get()
-            val UserField = mutableMapOf<String, Any>()
-            val OtherUserChat = OtherChatTalkingToRequests
-            OtherUserChat.add(MyUserId)
+        // Remove person from being viewed anymore
+        val otherUser: DocumentReference = firestoreInstance.document("users/${OtherUserId}")
+        otherUser.get()
+        val UserField = mutableMapOf<String, Any>()
+        NotViewPeople.add(MyUserId)
+        UserField[References.NotToBeViwedAnywhere.toString()] = NotViewPeople
 
-            UserField["numberOfPeopleDating"] = UserField
 
+        otherUser.update(UserField)
 
-            otherUser.update(UserField)
-
-            // Remove Requests Once Sent
-
+        // Remove Requests Once Sent
 
 
 
-            // #2 Update My User too
-            val MyChat = ChatTalkingToRequests
 
-            MyUserField["numberOfPeopleDating"] = MyUserField
-            MyChat.add(OtherUserId)
+        // #2 Update My User too
+        val MyChat = ChatTalkingToRequests
+
+        MyUserField[References.NotToBeViwedAnywhere.toString()] = MyUserField
+        MyChat.add(OtherUserId)
 
 
-            // Removes Person from interests
-            val RequestReceived = OtherUsersIdRequests
-            RequestReceived.remove(OtherUserId)
-            MyUserField["requests"] = RequestReceived
+        // Removes Person from interests
+        val RequestReceived = OtherUsersIdRequests
+        RequestReceived.add(OtherUserId)
+        MyUserField[References.requests.toString()] = RequestReceived
+        currentUserDocRef.update(MyUserField)
 
-            currentUserDocRef.update(MyUserField)
+
 
 
 
@@ -244,6 +267,66 @@ object FireStoreUtil {
     }
 
 
+    fun Block(OtherUserId: String, MyUserId : String, NotViewPeopleArray: ArrayList<String>, MyDeclineBlocked : ArrayList<String>, NumberOfPeopleDating : ArrayList<String> , NoOfPeopleOtherUserDating : ArrayList<String>) {
+
+        val MyUserField = mutableMapOf<String, Any>() // Used for both the cases if and else
+
+
+        val otherUser: DocumentReference = firestoreInstance.document("users/${OtherUserId}")
+
+        otherUser.get()
+        val UserField = mutableMapOf<String, Any>()
+        val OtherUserChat = NotViewPeopleArray
+        OtherUserChat.add(MyUserId)
+        NoOfPeopleOtherUserDating.remove(MyUserId)
+        UserField["numberOfPeopleDating"] = NoOfPeopleOtherUserDating
+        UserField[References.NotToBeViwedAnywhere.toString()] = UserField
+
+
+
+        otherUser.update(UserField)
+
+        // Remove Requests Once Sent
+
+
+
+
+        // #2 Add to blocked users
+        val DeclineArray = MyDeclineBlocked
+        MyUserField[References.declineOrBlocked.toString()] = MyUserField
+        DeclineArray.add(OtherUserId)
+
+
+        // Remove from chat activity
+        val Num = NumberOfPeopleDating
+        Num.remove(OtherUserId)
+        MyUserField["numberOfPeopleDating"] = Num
+
+
+        currentUserDocRef.update(MyUserField)
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
+
+    // Send Image to the other user in message
+    fun sendMessage(message: Mesage, channelId: String) {
+        chatChannelCollection.document(channelId)
+            .collection("messages")
+            .add(message)
+    }
 
 
 
@@ -281,6 +364,8 @@ object FireStoreUtil {
                 }
 
     }
+
+
 
     fun GetDateChats(UsersNeeded : ArrayList<String>  , context: Context, onListen: (List<Item>) -> Unit): ListenerRegistration {
 
@@ -329,6 +414,7 @@ object FireStoreUtil {
 
 
                 }
+
                 onListen(items)
             }
     }
@@ -344,6 +430,8 @@ object FireStoreUtil {
 
 
 
+
+    // FCM Tokens registered here
     fun getFCMRegistrationTokens(onComplete: (tokens: MutableList<String>) -> Unit) {
         currentUserDocRef.get().addOnSuccessListener {
             val user = it.toObject(User::class.java)!!

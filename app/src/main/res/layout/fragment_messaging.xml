@@ -4,7 +4,18 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
             >
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:id="@+id/RecylerMessagingView"/>
+            android:layout_height="match_parent">
+        <TextView
+                android:text="Messages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView6"
+                android:textColor="@color/colorAccent" android:fontFamily="@font/bilbo" android:textSize="36sp"
+                android:layout_marginTop="70px" android:layout_marginStart="70px" android:layout_marginBottom="80px"/>
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" android:id="@+id/RecylerMessagingView"/>
+    </LinearLayout>
 </FrameLayout>

@@ -4,9 +4,11 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.RadioButton
+import com.example.tipster.SetImage
 import com.example.tipster.Util.FireStoreUtil
 
 import kotlinx.android.synthetic.main.interest.*
+import kotlinx.android.synthetic.main.set_image.*
 
 class Interest : AppCompatActivity() {
 
@@ -39,7 +41,6 @@ class Interest : AppCompatActivity() {
                     n.text =
                         Interests.AllCategoryTypes[CategoryNumber][CategoryTypeNumber] // Assigns values to radio buttons
 
-
                     if (n.isChecked) {
                         Interests.CategoryGatheredTypes[CategoryNumber] =
                             Interests.AllCategoryTypes[CategoryNumber][CategoryTypeNumber] // Assigns User interest values
@@ -55,10 +56,12 @@ class Interest : AppCompatActivity() {
                     FireabaseClass.AssignInterest()
                     // Upload to Firestore user
                     FireStoreUtil.UpdateInterest(Interests.CategoryGatheredTypes)
-                    // Complete Log In -> User Logged In succesfully
-                    FireStoreUtil.UpdateThatUserLoggedInSuccesfully()
-                    val intent = Intent(this, MainPage::class.java)
+
+
+                    val intent = Intent(this,  com.example.tipster.SetImage::class.java)
+
                     startActivity(intent)
+
 
                 }
 

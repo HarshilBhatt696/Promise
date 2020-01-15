@@ -95,18 +95,20 @@ class FirebaseDatabaseClass() {
 
 
     }
-    fun ProvideData(UserNames : String , Genders : String) {
-        UserName = UserNames
-        Gender = Genders
+
+    fun SetMatchMakingOff(MyUserName : String) {
+
+        FireabaseClass.myRef.child(MyUserName).setValue(false)
 
 
     }
 
-    fun GetUserName() {
 
 
 
-    }
+
+
+
 
 
 

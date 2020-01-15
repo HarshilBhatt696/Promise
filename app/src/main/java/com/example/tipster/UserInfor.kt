@@ -28,10 +28,16 @@ class UserInfor : AppCompatActivity()
                 UserInfo.Interest[CurrentText] = AnswerText.text.toString()
 
 
+                val name:String = ""
+                AnswerText.setText(name)
 
                 if (Ask.Interest.count() - 1 > AskQuestionNo) {
                     AskQuestionNo += 1
                     DescribeText.text = Ask.Interest[AskQuestionNo]
+
+
+
+
                 } else { // Limit reached - Move on
 
                     // Upload information Online
@@ -78,6 +84,8 @@ class CurrentUserInfo() {
     var Interest = mutableMapOf<String , Any>() // Mutable List
 
 
+
+
     fun ChangeInterest() {
 
         // Empty Now
@@ -92,7 +100,7 @@ class CurrentUserInfo() {
 
 class AskingQuestions() {
 
-    val Interest = arrayListOf<String>("bio" , "Whats your type")
+    val Interest = arrayListOf<String>("Bio" , "Whats your type")
 }
 
 val Ask = AskingQuestions()

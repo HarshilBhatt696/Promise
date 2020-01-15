@@ -3,10 +3,13 @@ package com.example.tipster.RecyclerView.Item
 import android.annotation.SuppressLint
 import android.content.Context
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.example.tipster.Flide.GlideApp
 import com.example.tipster.R
 import com.example.tipster.Util.StorageUtil
 import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.messaging_cell.*
 import kotlinx.android.synthetic.main.request_cell.*
 
@@ -21,9 +24,14 @@ class RequestClass(val Person : com.example.tipster.Model.User , val UserId : St
        // viewHolder.BioRequest.text = Person.Bio
 
         if (Person.profilePicturePath != null) {
-            Glide.with(Cont)
+
+
+
+            GlideApp.with(Cont)
                 .load(StorageUtil.pathToReference(Person.profilePicturePath))
+                .apply(RequestOptions.circleCropTransform())
                 .into(viewHolder.ReqeustImage)
+
         }
 
     }

@@ -33,6 +33,7 @@ import android.transition.TransitionManager
 import android.util.Log
 import android.view.Gravity
 import android.widget.*
+import com.example.tipster.Model.User
 import com.example.tipster.Service.MyFirebaseInstanceIDService
 import com.example.tipster.Util.FireStoreUtil
 import com.example.tipster.Util.New
@@ -41,9 +42,11 @@ import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.IdpResponse
 
 import com.google.android.gms.common.SignInButton
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.*
 import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.FirebaseInstanceIdService
 import kotlinx.android.synthetic.main.log_in_mobile_number.*
@@ -62,6 +65,9 @@ class login_mobile : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.log_in_mobile_number)
+
+
+        MyUserAssigned = false
 
         FirebaseApp.initializeApp(this)
 
@@ -104,6 +110,7 @@ class login_mobile : AppCompatActivity() {
         )
     }
 
+
     fun AssignUserName() {
         val UsersDisplayName = FireabaseClass.UserName
         val user = FirebaseAuth.getInstance().currentUser
@@ -111,7 +118,7 @@ class login_mobile : AppCompatActivity() {
             .setDisplayName(UsersDisplayName.toString()).build()
         user?.updateProfile(profileUpdates)
 
-        FireStoreUtil.initCurrentUserIfFirstTime { // TODO add register token
+        FireStoreUtil.initCurrentUserIfFirstTime(this) {
 
 
             val registrationToken = FirebaseInstanceId.getInstance().token!!
@@ -125,6 +132,10 @@ class login_mobile : AppCompatActivity() {
                     startActivity(intent)
 
             }
+
+        // If User exists it will take you to a different page
+       // Check(FireabaseClass.UserName , this)
+       // FireStoreUtil.IfUsersExists(FireabaseClass.UserName , this)
 
 
         }
@@ -143,14 +154,13 @@ class login_mobile : AppCompatActivity() {
                 // FROM HERE WE START
 
 
-                // Toast.makeText(this , User!!.email , Toast.LENGTH_SHORT).show()
+                 Toast.makeText(this , "Loading...." , Toast.LENGTH_SHORT).show()
 
                 AssignUserName() //
                 FireabaseClass.AllotUser() // USER Alloted to real time data
 
 
-                        val intent = Intent(this, UserInfor::class.java)
-                        startActivity(intent)
+
 
 
 

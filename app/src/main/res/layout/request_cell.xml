@@ -2,41 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto" android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="wrap_content" android:background="@drawable/same_color_background"
+              android:layout_height="wrap_content" android:background="@drawable/acceptbutton"
               android:layout_margin="20px">
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:id="@+id/ViewProfile">
         <ImageView
-                android:layout_width="120px"
-                android:layout_height="120px" app:srcCompat="@drawable/background_for_cell_update"
+                android:layout_width="200px"
+                android:layout_height="200px" app:srcCompat="@drawable/background_for_cell_update"
                 android:id="@+id/ReqeustImage" android:layout_margin="20px" android:layout_weight="0"/>
         <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" android:layout_weight="1">
+                android:layout_height="wrap_content" android:layout_weight="1">
             <TextView
-                    android:text="UserNameRequestText"
+                    android:text="Kishita"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:id="@+id/UserNameRequestText"
-                    android:layout_margin="20px" android:textColor="@color/MatchedWithDark"
-                    android:textSize="17dp"/>
-        </LinearLayout>
-        <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:layout_weight="0">
-            <Button
-                    android:text="Accept"
-                    android:layout_width="match_parent"
-                    android:layout_height="120px" android:id="@+id/AcceptIt"
-                    android:background="@drawable/only_buttons" android:layout_margin="20px" android:textSize="27px"/>
-            <Button
-                    android:text="Decline "
+                    android:layout_margin="20px" android:textColor="@color/NormalBackground"
+                    android:textSize="21dp" android:fontFamily="@font/damion"/>
+            <TextView
+                    android:text="TextView"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent" android:id="@+id/DeclineIt" android:layout_weight="0"
-                    android:background="@drawable/only_buttons" android:layout_margin="20px" android:textSize="27px"/>
+                    android:layout_height="wrap_content" android:id="@+id/textView" android:layout_weight="0"
+                    android:layout_margin="20px"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

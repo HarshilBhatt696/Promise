@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this) // Important
         val Database = FirebaseDatabaseClass()
 
-
+        MyUserAssigned = false
 
         Database.myRef.child(References.Codes.toString())
 

@@ -11,6 +11,9 @@ enum class References() {
     About,
     Describe ,
     chatChannels,
+    NotToBeViwedAnywhere ,
+    declineOrBlocked ,
+    requests ,
 
     // This only to check value
     ExtraDelete ,

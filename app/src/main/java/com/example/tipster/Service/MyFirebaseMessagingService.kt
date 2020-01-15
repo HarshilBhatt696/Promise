@@ -12,6 +12,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         if (remoteMessage.notification != null) {
             //TODO: Show notification if we're not online
             Log.d("FCM", remoteMessage.data.toString())
+
         }
     }
 }

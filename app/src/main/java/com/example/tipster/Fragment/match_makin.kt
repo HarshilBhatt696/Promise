@@ -3,6 +3,7 @@ package com.example.tipster.Fragment
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 //import android.support.design.widget.BottomSheetDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,25 +12,32 @@ import androidx.appcompat.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
+import com.airbnb.lottie.LottieAnimationView
+import com.bumptech.glide.request.RequestOptions
 import com.example.tipster.*
+import com.example.tipster.Flide.GlideApp
+import com.example.tipster.Model.User
+import com.example.tipster.R
 import com.example.tipster.RecyclerView.Item.MatchMakinProfile
 import com.example.tipster.RecyclerView.Item.PersonClass
 import com.example.tipster.Util.FireStoreUtil
+import com.example.tipster.Util.StorageUtil
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Section
-import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.*
 import kotlinx.android.synthetic.main.date_info.view.*
 import kotlinx.android.synthetic.main.fragment_match_makin.*
 import kotlinx.android.synthetic.main.fragment_match_makin.view.*
 import kotlinx.android.synthetic.main.fragment_messaging.*
 import kotlinx.android.synthetic.main.match_make_cells.view.*
-import com.xwray.groupie.OnItemClickListener
 import kotlinx.android.synthetic.main.date_info.*
+import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.match_make_cells.*
+import kotlin.reflect.KFunction
 
 class match_makin : androidx.fragment.app.Fragment() {
 
@@ -50,11 +58,14 @@ class match_makin : androidx.fragment.app.Fragment() {
 
         val view = inflater.inflate(R.layout.fragment_match_makin, container, false)
         view.apply {
-
+            HEs.playAnimation()
+            HEs.visibility = View.GONE
             MatchMake.setOnClickListener {
 
+                HEs.playAnimation()
+                HEs.visibility = View.VISIBLE
 
-                MatchMakeClicker()
+                MatchMakeClicker(HEs)
 
                 UploadList()
             }
@@ -72,20 +83,35 @@ class match_makin : androidx.fragment.app.Fragment() {
 
     fun UploadList() {
 
-        userListenerRegistration =
-            FireStoreUtil.addMatchMakers(this.activity!!, NoOfPeopleMatched, this::updateRecyclerView) /// Todo : add the dates required
+
+
+        //userListenerRegistration =
+//        for (n in 0..1) {
+//            userListenerRegistration = FireStoreUtil.addMatchMakers(this.activity!!, NoOfPeopleMatched, this::updateRecyclerView) /// Todo : add the dates required
+//        }
+
+
+
+
+
+
+
 
 
     }
 
-    fun MatchMakeClicker() {
+    fun MatchMakeClicker(Anim : LottieAnimationView) {
+     // NoOfPeopleMatched = DstingClass.GetNumberOfPeopleMatched(3 , Anim)
+
+        for (SameGender in DstingClass.SameGCollected) {
+            NoOfPeopleMatched.add(SameGender)
+        }
 
 
-      NoOfPeopleMatched = DstingClass.GetNumberOfPeopleMatched(3)
+        FireStoreUtil.addMatchMakers(this.activity!!,  DstingClass.GetNumberOfPeopleMatched(3 , Anim), this::updateRecyclerView) /// Todo : add the dates required
+        FireStoreUtil.addMatchMakers(this.activity!!,  DstingClass.GetNumberOfPeopleMatched(3 , Anim), this::updateRecyclerView) /// Todo : add the dates required
 
-
-
-
+val Upload = this::updateRecyclerView
     }
 //    override fun onDestroyView() {
 //        super.onDestroyView()
@@ -102,15 +128,20 @@ class match_makin : androidx.fragment.app.Fragment() {
 //
 //    }
 
+
+
     private fun updateRecyclerView(items: List<com.xwray.groupie.kotlinandroidextensions.Item>) {
 
         fun init() {
             MainList.apply {
-                layoutManager = LinearLayoutManager(this@match_makin.context)
+                layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)// LinearLayoutManager(this.context) // StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
                 adapter = GroupAdapter<ViewHolder>().apply {
                     peopleSection = Section(items)
                     add(peopleSection)
                     setOnItemClickListener(onItemClick)
+                    FireabaseClass.myRef.child("line 125 match").setValue(NoOfPeopleMatched)
+
+
                 }
 
 
@@ -127,6 +158,9 @@ class match_makin : androidx.fragment.app.Fragment() {
             updateItems()
 
     }
+
+
+
 
 
     private val onItemClick = OnItemClickListener { item, view ->
@@ -148,30 +182,56 @@ class match_makin : androidx.fragment.app.Fragment() {
            Dialog.UserDescribe.text = item.Person.Bio
             Dialog.UserNames.text = item.Person.name
 
+
+            if (item.Person.profilePicturePath != null) {
+                GlideApp.with(this)
+                    .load(StorageUtil.pathToReference(item.Person.profilePicturePath!!))
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(Dialog.UserImage)
+            }
+
+
+
             Dialog.MatchMakeChat.setOnClickListener {
 
                 FireStoreUtil.AddToDatingSystem(item.Person.name)
 
                 FireStoreUtil.getCurrentUser { user ->
                     // Sends request to the Date Chat User to chat with you and talk to you.
-                    FireStoreUtil.UpdateOtherUsersInFO(item.Person.name , user.name , user.requests) // Todo check if it works
+                    FireStoreUtil.UpdateOtherUsersInFO(item.Person.name , user.name , user.requests , user.NotToBeViwedAnywhere) // Todo check if it works
+                    FireStoreUtil.addMatchMakers(this.activity!!, ArrayList<String>(), this::updateRecyclerView) /// Todo : add the dates required
+                    Contenty.dismiss()
+                    Toast.makeText(this.context , "Request Sent" , Toast.LENGTH_SHORT).show()
+                    // In a day only one match make
+                    FireabaseClass.SetMatchMakingOff(user.name)
                 }
 
 
             }
 
+            SendRequests.setOnClickListener {
+                FireStoreUtil.AddToDatingSystem(item.Person.name)
+
+                FireStoreUtil.getCurrentUser { user ->
+                    // Sends request to the Date Chat User to chat with you and talk to you.
+                    FireStoreUtil.UpdateOtherUsersInFO(item.Person.name , user.name , user.requests , user.NotToBeViwedAnywhere) // Todo check if it works
+                    FireabaseClass.SetMatchMakingOff(user.name)
+                }
+                FireStoreUtil.addMatchMakers(this.activity!!, ArrayList<String>(), this::updateRecyclerView) /// Todo : add the dates required
+                Toast.makeText(this.context , "Request Sent" , Toast.LENGTH_SHORT).show()
+
+
+                Contenty.dismiss()
+            }
+
+
+
+        }
+
         }
 
 
 
-
-
-
-
-
-
-
-        }
 
 
 

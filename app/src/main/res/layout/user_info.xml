@@ -7,7 +7,13 @@
             android:text="Decribe yourself "
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/DescribeText" android:layout_weight="0"
-            android:textSize="140px" android:padding="120px"/>
+            android:textSize="140px" android:padding="120px" android:fontFamily="@font/boogaloo"
+            android:textColor="@color/fui_bgEmail"/>
+    <TextView
+            android:text="Write about 25-50 words"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:id="@+id/textView4" android:layout_weight="0"
+            android:layout_marginStart="120px" android:textColor="@color/TextColors"/>
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"

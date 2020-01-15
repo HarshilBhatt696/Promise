@@ -8,6 +8,13 @@
               tools:context=".ChatActivity" android:orientation="vertical">
 
 
+    <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ccc_textfield"
+            android:theme="?attr/actionBarTheme"
+            android:minHeight="?attr/actionBarSize" android:id="@+id/toolbar" android:layout_weight="0"
+            android:layout_margin="30px"/>
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:layout_weight="1" android:padding="20px"
@@ -25,12 +32,15 @@
                                                                                android:id="@+id/Image_Clicker"/>
 
         <com.google.android.material.textfield.TextInputEditText android:layout_width="match_parent"
+
                                                                  android:layout_height="wrap_content"
-                                                                 android:layout_toEndOf="@+id/Image_Clicker"
-                                                                 android:background="@drawable/rect_oval_white"
-                                                                 android:hint="fire your message" android:padding="9dp"
                                                                  android:layout_marginBottom="8dp"
-                                                                 android:layout_marginEnd="8dp" android:elevation="2dp"
+                                                                 android:layout_marginEnd="8dp"
+                                                                 android:layout_toEndOf="@id/Image_Clicker"
+                                                                 android:background="@drawable/rect_oval_white"
+                                                                 android:elevation="2dp"
+                                                                 android:hint="Send your thoughts"
+                                                                 android:padding="8dp"
                                                                  android:id="@+id/EditTextMessages"/>
         <androidx.appcompat.widget.AppCompatImageView android:layout_width="wrap_content"
                                                       android:layout_height="wrap_content"

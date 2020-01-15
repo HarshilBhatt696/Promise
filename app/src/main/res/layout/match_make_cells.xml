@@ -2,16 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
               android:layout_height="wrap_content" android:orientation="vertical" android:gravity="center"
-              android:background="@drawable/background_for_cell_update" android:layout_margin="20px">
+              android:layout_margin="20px" android:background="@drawable/matchmakingbackgroun">
 
     <ImageView
-            android:layout_width="400px"
-            android:layout_height="400px" app:srcCompat="@drawable/add_reminder_24dp"
-            android:id="@+id/imageView2" android:layout_weight="0"/>
-    <Button
-            android:text="View Profile"
+            android:layout_width="650px"
+            android:layout_height="650px"
+            android:id="@+id/imageView2" android:layout_weight="0" android:layout_margin="90px"
+            android:background="@drawable/circle2" app:srcCompat="@drawable/c"/>
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/ViewProfile" android:layout_weight="0"
-            android:textColor="@color/MatchedWithDark" android:background="@color/NormalBackground"
-            android:layout_margin="20px"/>
+            android:layout_height="match_parent" android:layout_weight="0">
+        <TextView
+                android:text="Bio comes here even if the most imporssioble task are persfoenfa fajdf hagien "
+                android:layout_width="match_parent"
+                android:layout_height="80px" android:id="@+id/textView7" android:layout_margin="30px"
+                android:textColor="#f80759" android:fontFamily="@font/boogaloo"/>
+    </LinearLayout>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:layout_weight="0" android:padding="30px">
+        <Button
+                android:text="Send Request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/SendRequests" android:layout_weight="4"
+                android:background="@drawable/cc" android:textSize="14sp" android:fontFamily="@font/comfortaa_bold"
+                android:textColor="#f27121"/>
+    </LinearLayout>
 </LinearLayout>

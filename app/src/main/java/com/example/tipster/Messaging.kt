@@ -50,12 +50,14 @@ class Messaging : Fragment() {
 
 
         // Get users only  who he matchmake
-        FireStoreUtil.getCurrentUser { user ->
-            userListenerRegistration =
-                FireStoreUtil.GetDateChats(user.numberOfPeopleDating , this.activity!!, this::updateRecyclerView)
+            FireStoreUtil.getCurrentUser { user ->
+                userListenerRegistration = FireStoreUtil.GetDateChats(user.numberOfPeopleDating , this.activity!!, this::updateRecyclerView)
+            }
 
 
-        }
+
+
+
 
 
 
@@ -101,7 +103,7 @@ class Messaging : Fragment() {
             FireabaseClass.myRef.child(References.ExtraDelete2.toString()).setValue(item.Person.name)
 
             startActivity(Intent(this.context , ChatActivity::class.java))
-
+            itemValue = item
 
 
 
@@ -117,3 +119,4 @@ class Messaging : Fragment() {
 
 var  USER_NAME = "USER_NAME"
 var USER_ID = "USER_ID"
+lateinit var itemValue : Item<ViewHolder>

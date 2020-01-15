@@ -5,40 +5,48 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity" android:gravity="center">
-    <LinearLayout
-            android:orientation="vertical"
+        tools:context=".MainActivity" android:gravity="center"
+>
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" android:gravity="center">
-        <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/TextUserName" android:gravity="center" android:layout_margin="20px"
-                android:hint="UserName..." android:background="@drawable/background_for_cell_update"
-                android:padding="20px"/>
-        <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/TextCode" android:gravity="center" android:hint="Code..."
-                android:layout_margin="20px" android:background="@drawable/background_for_cell_update"
-                android:padding="20px"/>
-        <TextView
-                android:text="yes change this to the account name "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView2" android:gravity="center"
-                android:padding="30px"/>
-        <TextView
-                android:text="yes change this to the account name "
+            android:layout_height="match_parent">
+
+        <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/textView3" android:gravity="center"/>
-        <Button
-                android:text="Enter"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/EnterToLogin"
-                android:background="@drawable/background_for_cell_update" android:layout_margin="200px"/>
-    </LinearLayout>
+                android:layout_height="match_parent" android:gravity="center" android:layout_weight="0">
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/TextUserName" android:gravity="center" android:layout_margin="20px"
+                    android:hint="UserName..." android:background="@drawable/ccc_textfield"
+                    android:padding="20px"/>
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:ems="10"
+                    android:id="@+id/TextCode" android:gravity="center" android:hint="Code..."
+                    android:layout_margin="20px" android:background="@drawable/ccc_textfield"
+                    android:padding="20px"/>
+            <TextView
+                    android:text="Follow the Instagram account to get the code "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:id="@+id/textView2" android:gravity="center"
+                    android:padding="30px" android:textColor="@color/colorAccent"/>
+            <Button
+                    android:text="Enter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/EnterToLogin"
+                    android:background="@drawable/c" android:layout_margin="70px" android:foregroundGravity="bottom"
+            />
+        </LinearLayout>
+        <com.airbnb.lottie.LottieAnimationView android:layout_width="match_parent" android:layout_height="600px"
+                                               android:id="@+id/HEs4" app:lottie_loop="true"
+                                               app:lottie_rawRes="@raw/loveloadsactivity" app:lottie_autoPlay="true"
+                                               android:layout_weight="0" android:foregroundGravity="bottom"
+                                               android:layout_gravity="bottom"/>
+    </FrameLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>

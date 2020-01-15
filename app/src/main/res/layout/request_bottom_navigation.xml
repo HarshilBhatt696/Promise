@@ -4,16 +4,14 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-            android:text="TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/textView"/>
     <Button
             android:text="Accept"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/AcceptIt"/>
+            android:layout_height="wrap_content" android:id="@+id/AcceptIt"
+            android:background="@drawable/acceptbutton" android:layout_margin="20px"/>
     <Button
             android:text="Decline"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" android:id="@+id/DeclineIt"/>
+            android:layout_height="wrap_content" android:id="@+id/DeclineIt"
+            android:background="@drawable/declinebutton" android:layout_margin="20px"/>
 </LinearLayout>

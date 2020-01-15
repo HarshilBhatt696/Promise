@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.example.tipster.Flide.GlideApp
 //import com.example.tipster.Glide.GlideApp
 
 
@@ -21,6 +24,7 @@ import com.example.tipster.Util.FireStoreUtil
 import com.example.tipster.Util.StorageUtil
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 
 
@@ -61,7 +65,7 @@ class Profile : androidx.fragment.app.Fragment() {
                 startActivity(Intent(this.context , MainActivity::class.java))
             }
 
-            imageView.setOnClickListener {
+            roundedimag.setOnClickListener {
                 val intent = Intent().apply {
                     type = "image/*"
                     action = Intent.ACTION_GET_CONTENT
@@ -80,7 +84,7 @@ class Profile : androidx.fragment.app.Fragment() {
 
                     }
                 } else {
-                    FireStoreUtil.UpdateUser(BasicName.text.toString() , null) // TODO : WHEN PROFILE LOADED FILL IT WITH BIO ALREADY THERE CHECK VIDEO PROFILE EXAMPLE
+                    FireStoreUtil.UpdateUser(Bio.text.toString() , null) // TODO : WHEN PROFILE LOADED FILL IT WITH BIO ALREADY THERE CHECK VIDEO PROFILE EXAMPLE
                 }
 
 
@@ -98,6 +102,15 @@ class Profile : androidx.fragment.app.Fragment() {
 
 
             }
+
+            MatchMakeSameGender.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked) {
+                    FireStoreUtil.MatchMakeSameGender(true)
+                } else {
+                    FireStoreUtil.MatchMakeSameGender(false)
+                }
+            }
+
 
 
 
@@ -123,9 +136,9 @@ class Profile : androidx.fragment.app.Fragment() {
 
 
 
-//            Glide.with(this)
-//                .load(selectedImageBytes)
-//                 .into(imageView)
+            GlideApp.with(this)
+               .load(selectedImageBytes)
+                 .into(roundedimag)
 
 
             pictureJustChanged = true
@@ -143,17 +156,24 @@ class Profile : androidx.fragment.app.Fragment() {
 
         FireStoreUtil.getCurrentUser { user ->
             if (this@Profile.isVisible) {
-                Bio.setText(user.gender)
-                BasicName.setText(user.name)
+                Bio.setText(user.Bio)
+                MyName.setText(user.name)
+
+                MatchMakeSameGender.isChecked = user.MatchMakeSameGender
+
+
+
+                if (!pictureJustChanged && user.profilePicturePath != null) {
 
 
 
 
-                if (user.profilePicturePath != null) {
-//                    GlideApp.with(this)
-//                        .load(StorageUtil.pathToReference(user.profilePicturePath))
-//                        .placeholder(R.drawable.ic_alarm_add_black_24dp)
-//                        .into(imageView)
+
+                    GlideApp.with(this)
+                        .load(StorageUtil.pathToReference(user.profilePicturePath))
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(roundedimag)
+
 
 //                    Glide.with(this)
 //                        .load(StorageUtil.pathToReference(user.profilePicturePath))
@@ -174,7 +194,9 @@ class Profile : androidx.fragment.app.Fragment() {
 
 
         }
-    }
+
+
+}
 
 
 

@@ -3,7 +3,14 @@
               xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context=".Fragment.match_makin" android:orientation="vertical" android:gravity="bottom">
+              tools:context=".Fragment.match_makin" android:orientation="vertical" android:gravity="bottom"
+              android:visibility="visible">
+
+    <com.airbnb.lottie.LottieAnimationView android:layout_width="match_parent" android:layout_height="match_parent"
+                                           android:id="@+id/HEs" app:lottie_loop="true"
+                                           app:lottie_rawRes="@raw/heartloader" app:lottie_autoPlay="false"
+                                           android:layout_weight="1" android:layout_margin="100px"
+                                           android:visibility="visible"/>
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/MainList" android:layout_weight="1">
@@ -12,11 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:layout_gravity="bottom" android:foregroundGravity="bottom"
             android:layout_marginStart="0dp" android:layout_marginEnd="0dp"
-         >
+    >
         <Button
                 android:text="Match Make "
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/MatchMake" android:layout_margin="90px"
-                android:background="@drawable/background_for_cell_update"/>
+                android:background="@drawable/acceptbutton" android:textColor="@color/browser_actions_bg_grey"/>
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 </LinearLayout>
